@@ -47,7 +47,7 @@ func TestUsernameLength(t *testing.T) {
 	}
 
 	_, err := models.NewUser(newUsername, password, email)
-	if err == nil || err.Error() != "Username muy largo, maximo 30 caracteres" {
+	if err == nil || err.Error() != "El username es demaciado largo" {
 		t.Error("Es posible generar un usuario con un username muy grande")
 	}
 }
@@ -59,13 +59,13 @@ func TestInvalidEmail(t *testing.T) {
 }
 
 func TestLogin(t *testing.T) {
-	if valid := models.Login(username, password); !valid {
+	if _, err := models.Login(username, password); err != nil {
 		t.Error("No es posible realizar el login")
 	}
 }
 
 func TestNoLogin(t *testing.T) {
-	if valid := models.Login(randomUsername(), password); valid {
+	if _, err := models.Login(randomUsername(), password); err == nil {
 		t.Error("Es posible realizar el login con parametros erroneos")
 	}
 }
